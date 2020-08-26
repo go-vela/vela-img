@@ -40,8 +40,8 @@ func main() {
 
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
-			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "VELA_LOG_LEVEL", "DOCKER_LOG_LEVEL"},
-			FilePath: string("/vela/parameters/docker/log_level,/vela/secrets/docker/log_level"),
+			EnvVars:  []string{"PARAMETER_LOG_LEVEL", "VELA_LOG_LEVEL", "IMG_LOG_LEVEL"},
+			FilePath: string("/vela/parameters/img/log_level,/vela/secrets/img/log_level"),
 			Name:     "log.level",
 			Usage:    "set log level - options: (trace|debug|info|warn|error|fatal|panic)",
 			Value:    "info",
@@ -78,9 +78,9 @@ func run(c *cli.Context) error {
 
 	logrus.WithFields(logrus.Fields{
 		"code":     "https://github.com/go-vela/vela-img",
-		"docs":     "https://go-vela.github.io/docs/plugins/registry/docker",
+		"docs":     "https://go-vela.github.io/docs/plugins/registry/img",
 		"registry": "https://hub.docker.com/r/target/vela-img",
-	}).Info("Vela Docker Plugin")
+	}).Info("Vela Img Plugin")
 
 	return nil
 }

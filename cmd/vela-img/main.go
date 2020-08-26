@@ -82,5 +82,15 @@ func run(c *cli.Context) error {
 		"registry": "https://hub.docker.com/r/target/vela-img",
 	}).Info("Vela Img Plugin")
 
-	return nil
+	// create the plugin
+	p := Plugin{}
+
+	// validate the plugin
+	err := p.Validate()
+	if err != nil {
+		return err
+	}
+
+	// execute the plugin
+	return p.Exec()
 }

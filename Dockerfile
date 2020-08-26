@@ -18,4 +18,6 @@ FROM r.j3ss.co/img:v0.5.10
 
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-ENTRYPOINT [ "/" ]
+COPY release/vela-img /bin/vela-img
+
+ENTRYPOINT [ "/bin/vela-img" ]

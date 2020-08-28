@@ -48,6 +48,12 @@ func main() {
 		},
 	}
 
+	// add config flags
+	app.Flags = append(app.Flags, configFlags...)
+
+	// add build flags
+	app.Flags = append(app.Flags, buildFlags...)
+
 	err := app.Run(os.Args)
 	if err != nil {
 		log.Fatal(err)

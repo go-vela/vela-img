@@ -26,6 +26,8 @@ func TestImg_Build_Command(t *testing.T) {
 		Target:    "foo",
 	}
 
+	// nolint // this functionality is not exploitable the way
+	// the plugin accepts configuration
 	want := exec.Command(
 		_img,
 		buildAction,

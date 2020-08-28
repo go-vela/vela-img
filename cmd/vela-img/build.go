@@ -191,6 +191,8 @@ func (b *Build) Command() *exec.Cmd {
 		flags = append(flags, fmt.Sprintf("--target %s", b.Target))
 	}
 
+	// nolint // this functionality is not exploitable the way
+	// the plugin accepts configuration
 	return exec.Command(_img, append([]string{buildAction}, flags...)...)
 }
 

@@ -47,12 +47,14 @@ var (
 			Usage:    "Docker registry name to communicate with",
 			Value:    "index.docker.io",
 		},
+		// nolint
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_USERNAME", "REGISTRY_USERNAME", "DOCKER_USERNAME"},
 			FilePath: string("/vela/parameters/img/registry/username,/vela/secrets/img/registry/username,/vela/secrets/img/username"),
 			Name:     "config.username",
 			Usage:    "user name for communication with the registry",
 		},
+		// nolint
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_PASSWORD", "REGISTRY_PASSWORD", "DOCKER_PASSWORD"},
 			FilePath: string("/vela/parameters/img/registry/password,/vela/secrets/img/registry/password,/vela/secrets/img/password"),

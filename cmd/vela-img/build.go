@@ -21,7 +21,7 @@ type Build struct {
 	BuildArgs []string
 	// CacheFrom should be images to consider as cache sources
 	CacheFrom []string
-	// directory should be a path to the context you want docker to run
+	// directory should be a path to the context you want img to run
 	Directory string
 	// File should be name and path to the Dockerfile
 	File string
@@ -57,7 +57,7 @@ var buildFlags = []cli.Flag{
 	},
 	&cli.StringFlag{
 		Name:     "build.directory",
-		Usage:    "should be a path to the context you want docker to run",
+		Usage:    "should be a path to the context you want img to run",
 		EnvVars:  []string{"PARAMETER_DIRECTORY", "BUILD_DIRECTORY"},
 		FilePath: string("/vela/parameters/img/build/directory,/vela/secrets/img/build/directory"),
 		Value:    ".",

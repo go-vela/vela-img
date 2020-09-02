@@ -20,14 +20,14 @@ type Plugin struct {
 func (p *Plugin) Exec() error {
 	logrus.Debug("running plugin with provided configuration")
 
-	// write the config.json file with Docker credentials
-	err := p.Config.Write()
+	// output terraform version for troubleshooting
+	err := execCmd(versionCmd())
 	if err != nil {
 		return err
 	}
 
-	// output terraform version for troubleshooting
-	err = execCmd(versionCmd())
+	// write the config.json file with Docker credentials
+	err = p.Config.Login()
 	if err != nil {
 		return err
 	}

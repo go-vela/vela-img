@@ -16,6 +16,7 @@ func TestImg_Build_Command(t *testing.T) {
 	b := &Build{
 		BuildArgs: []string{"FOO"},
 		CacheFrom: []string{"index.docker.io/target/vela-img"},
+		Directory: ".",
 		File:      "Dockerfile",
 		Labels:    []string{"sha"},
 		NoCache:   true,
@@ -33,14 +34,15 @@ func TestImg_Build_Command(t *testing.T) {
 		buildAction,
 		fmt.Sprintf("--build-arg \"%s\"", b.BuildArgs[0]),
 		fmt.Sprintf("--cache-from \"%s\"", b.CacheFrom[0]),
-		fmt.Sprintf("--file %s", b.File),
+		fmt.Sprintf("-f=%s", b.File),
 		fmt.Sprintf("--label \"%s\"", b.Labels[0]),
 		"--no-cache",
 		"--no-console",
 		fmt.Sprintf("--output %s", b.Output),
 		fmt.Sprintf("--platform \"%s\"", b.Platforms[0]),
-		fmt.Sprintf("--tag \"%s\"", b.Tags[0]),
+		fmt.Sprintf("-t=%s", b.Tags[0]),
 		fmt.Sprintf("--target %s", b.Target),
+		".",
 	)
 
 	got := b.Command()
@@ -62,7 +64,8 @@ func TestImg_Build_Exec_Error(t *testing.T) {
 func TestImg_Build_Validate(t *testing.T) {
 	// setup types
 	b := &Build{
-		Tags: []string{"image_name:tag"},
+		Directory: ".",
+		Tags:      []string{"image_name:tag"},
 	}
 
 	err := b.Validate()
@@ -73,7 +76,21 @@ func TestImg_Build_Validate(t *testing.T) {
 
 func TestImg_Config_Validate_NoTags(t *testing.T) {
 	// setup types
-	b := &Build{}
+	b := &Build{
+		Directory: ".",
+	}
+
+	err := b.Validate()
+	if err == nil {
+		t.Errorf("Validate should have returned err")
+	}
+}
+
+func TestImg_Config_Validate_NoDirectory(t *testing.T) {
+	// setup types
+	b := &Build{
+		Tags: []string{"image_name:tag"},
+	}
 
 	err := b.Validate()
 	if err == nil {

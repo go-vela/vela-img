@@ -7,7 +7,11 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
+	"os"
+	"os/exec"
+	"strings"
 
+	"github.com/go-vela/types/constants"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
 	"github.com/urfave/cli/v2"
@@ -27,8 +31,10 @@ const (
 
 // Config holds input parameters for the plugin.
 type Config struct {
-	// Password for communication with the Docker Registry
+	// password for communication with the Docker Registry
 	Password string
+	// config path the docker json file exists for authentication
+	Path string
 	// full url to Docker Registry
 	URL string
 	// user name for communication with the Docker Registry
@@ -43,7 +49,7 @@ var (
 		&cli.StringFlag{
 			EnvVars:  []string{"PARAMETER_REGISTRY", "REGISTRY_NAME"},
 			FilePath: string("/vela/parameters/img/registry/name,/vela/secrets/docker/registry/name"),
-			Name:     "config.name",
+			Name:     "config.registry",
 			Usage:    "Docker registry name to communicate with",
 			Value:    "index.docker.io",
 		},
@@ -61,8 +67,47 @@ var (
 			Name:     "config.password",
 			Usage:    "password for communication with the registry",
 		},
+		// nolint
+		&cli.StringFlag{
+			EnvVars:  []string{"PARAMETER_PATH", "REGISTRY_PATH", "DOCKER_CONFIG_PATH", "DOCKER_CONFIG"},
+			FilePath: string("/vela/parameters/img/registry/path,/vela/secrets/img/registry/path,/vela/secrets/img/path"),
+			Name:     "config.path",
+			Usage:    "password for communication with the registry",
+			Value:    "~/.docker/config.json",
+		},
 	}
 )
+
+// Write creates a Docker config.json file for building and publishing the image.
+func (c *Config) Login() error {
+	logrus.Trace("logging in registry information")
+
+	// variable to store flags for command
+	var flags []string
+
+	// check if name, username and password are provided
+	if len(c.URL) == 0 || len(c.Username) == 0 || len(c.Password) == 0 {
+		return nil
+	}
+
+	flags = append(flags, fmt.Sprintf("-p=%s", c.Password))
+	flags = append(flags, fmt.Sprintf("-u=%s", c.Username))
+	flags = append(flags, c.URL)
+
+	//nolint
+	e := exec.Command(_img, append([]string{"login"}, flags...)...)
+
+	// set command stdout to OS stdout
+	e.Stdout = os.Stdout
+	// set command stderr to OS stderr
+	e.Stderr = os.Stderr
+
+	cmd := strings.ReplaceAll(strings.Join(e.Args, " "), c.Password, constants.SecretMask)
+
+	fmt.Println("$", cmd)
+
+	return e.Run()
+}
 
 // Write creates a Docker config.json file for building and publishing the image.
 func (c *Config) Write() error {
@@ -90,10 +135,13 @@ func (c *Config) Write() error {
 		basicAuth,
 	)
 
-	// create full path for config.json file
-	path := "/root/.docker/config.json"
+	// // send Filesystem call to create directory path for .netrc file
+	// err := a.Fs.MkdirAll(filepath.Dir("~/.docker/"), 0777)
+	// if err != nil {
+	// 	return err
+	// }
 
-	return a.WriteFile(path, []byte(out), 0644)
+	return a.WriteFile(c.Path, []byte(out), 0644)
 }
 
 // Validate verifies the Config is properly configured.

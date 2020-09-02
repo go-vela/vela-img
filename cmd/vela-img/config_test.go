@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/afero"
 )
 
-func TestImg_Config_Write(t *testing.T) {
+func TestImg_Config_Login(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
 
@@ -27,7 +27,7 @@ func TestImg_Config_Write(t *testing.T) {
 	}
 }
 
-func TestImg_Config_Write_NoName(t *testing.T) {
+func TestImg_Config_Login_NoName(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
 
@@ -44,7 +44,7 @@ func TestImg_Config_Write_NoName(t *testing.T) {
 	}
 }
 
-func TestImg_Config_Write_NoUsername(t *testing.T) {
+func TestImg_Config_Login_NoUsername(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
 
@@ -61,7 +61,7 @@ func TestImg_Config_Write_NoUsername(t *testing.T) {
 	}
 }
 
-func TestImg_Config_Write_NoPassword(t *testing.T) {
+func TestImg_Config_Login_NoPassword(t *testing.T) {
 	// setup filesystem
 	appFS = afero.NewMemMapFs()
 

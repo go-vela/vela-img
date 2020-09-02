@@ -18,6 +18,7 @@ func TestImg_Plugin_Validate(t *testing.T) {
 		Build: &Build{
 			BuildArgs: []string{"FOO"},
 			CacheFrom: []string{"index.docker.io/target/vela-img"},
+			Directory: ".",
 			File:      "Dockerfile",
 			Labels:    []string{"sha"},
 			NoCache:   true,

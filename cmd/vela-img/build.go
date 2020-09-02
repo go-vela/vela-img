@@ -21,6 +21,8 @@ type Build struct {
 	BuildArgs []string
 	// CacheFrom should be images to consider as cache sources
 	CacheFrom []string
+	// directory should be a path to the context you want docker to run
+	Directory string
 	// File should be name and path to the Dockerfile
 	File string
 	// Labels should be set metadata for an image
@@ -52,6 +54,13 @@ var buildFlags = []cli.Flag{
 		Usage:    "should set build time variables",
 		EnvVars:  []string{"PARAMETER_CACHE_FROM", "BUILD_CACHE_FROM"},
 		FilePath: string("/vela/parameters/img/build/cache_from,/vela/secrets/img/build/cache_from"),
+	},
+	&cli.StringFlag{
+		Name:     "build.directory",
+		Usage:    "should be a path to the context you want docker to run",
+		EnvVars:  []string{"PARAMETER_DIRECTORY", "BUILD_DIRECTORY"},
+		FilePath: string("/vela/parameters/img/build/directory,/vela/secrets/img/build/directory"),
+		Value:    ".",
 	},
 	&cli.StringFlag{
 		Name:     "build.file",
@@ -134,7 +143,7 @@ func (b *Build) Command() *exec.Cmd {
 	// check if File is provided
 	if len(b.File) > 0 {
 		// add flag for File from provided build command
-		flags = append(flags, fmt.Sprintf("--file %s", b.File))
+		flags = append(flags, fmt.Sprintf("-f=%s", b.File))
 	}
 
 	// check if Labels is provided
@@ -182,7 +191,7 @@ func (b *Build) Command() *exec.Cmd {
 			tags += fmt.Sprintf(" %s", tag)
 		}
 		// add flag for Labels from provided build command
-		flags = append(flags, fmt.Sprintf("--tag \"%s\"", strings.TrimPrefix(tags, " ")))
+		flags = append(flags, fmt.Sprintf("-t=%s", strings.TrimPrefix(tags, " ")))
 	}
 
 	// check if Target is provided
@@ -190,6 +199,9 @@ func (b *Build) Command() *exec.Cmd {
 		// add flag for Target from provided build command
 		flags = append(flags, fmt.Sprintf("--target %s", b.Target))
 	}
+
+	// add the required directory param
+	flags = append(flags, b.Directory)
 
 	// nolint // this functionality is not exploitable the way
 	// the plugin accepts configuration
@@ -215,6 +227,11 @@ func (b *Build) Exec() error {
 // Validate verifies the Build is properly configured.
 func (b *Build) Validate() error {
 	logrus.Trace("validating build plugin configuration")
+
+	// verify directory are provided
+	if len(b.Directory) == 0 {
+		return fmt.Errorf("no build directory provided")
+	}
 
 	// verify tag are provided
 	if len(b.Tags) == 0 {

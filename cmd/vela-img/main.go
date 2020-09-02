@@ -89,7 +89,26 @@ func run(c *cli.Context) error {
 	}).Info("Vela Img Plugin")
 
 	// create the plugin
-	p := Plugin{}
+	p := Plugin{
+		Config: &Config{
+			Password: c.String("config.password"),
+			URL:      c.String("config.registry"),
+			Username: c.String("config.username"),
+		},
+		Build: &Build{
+			BuildArgs: c.StringSlice("build.build-args"),
+			CacheFrom: c.StringSlice("build.cache-from"),
+			Directory: c.String("build.directory"),
+			File:      c.String("build.file"),
+			Labels:    c.StringSlice("build.labels"),
+			NoCache:   c.Bool("build.no-cache"),
+			NoConsole: c.Bool("build.no-console"),
+			Output:    c.String("build.output"),
+			Platforms: c.StringSlice("build.platforms"),
+			Tags:      c.StringSlice("build.tags"),
+			Target:    c.String("build.target"),
+		},
+	}
 
 	// validate the plugin
 	err := p.Validate()

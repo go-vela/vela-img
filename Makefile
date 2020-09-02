@@ -186,18 +186,18 @@ docker-test:
 	@echo
 	@echo "### Testing vela-img:local image"
 	@docker run --rm \
-		-e BUILD_COMMIT=123abcdefg \
-		-e BUILD_EVENT=push \
+		-e DOCKER_PASSWORD=secretPassword \	
+		-e PARAMETER_REGISTRY=index.docker.io \		
+		-e DOCKER_USERNAME=moby \		
 		-e PARAMETER_CONTEXT=/workspace/ \
-		-e PARAMETER_DOCKERFILE=Dockerfile.example \
-		-e PARAMETER_DRY_RUN=true \
-		-e PARAMETER_REGISTRY=index.docker.io \
-		-e PARAMETER_REPO=index.docker.io/target/vela-img \
-		-e PARAMETER_TAGS=latest \
-		-v $(shell pwd):/workspace \
+		-e PARAMETER_FILE=Dockerfile.example \
+		-e PARAMETER_TAGS=index.docker.io/target/vela-img:latest \
+		-v $(shell pwd):/home/user/src:ro \
+		--workdir /home/user/src \
+		--security-opt seccomp=unconfined --security-opt apparmor=unconfined \
 		vela-img:local
 
-# The `docker-run` target is intended to execute
+# The `docker-run` 	target is intended to execute
 # the Docker image for the plugin.
 #
 # Usage: `make docker-run`
@@ -206,20 +206,21 @@ docker-run:
 	@echo
 	@echo "### Executing vela-img:local image"
 	@docker run --rm \
-		-e BUILD_COMMIT \
-		-e BUILD_EVENT \
-		-e BUILD_TAG \
-		-e DOCKER_USERNAME \
+		-e PARAMETER_LOG_LEVEL \
 		-e DOCKER_PASSWORD \
-		-e PARAMETER_AUTO_TAG \
-		-e PARAMETER_BUILD_ARGS \
-		-e PARAMETER_CACHE \
-		-e PARAMETER_CACHE_REPO \
-		-e PARAMETER_CONTEXT \
-		-e PARAMETER_DOCKERFILE \
-		-e PARAMETER_DRY_RUN \
 		-e PARAMETER_REGISTRY \
-		-e PARAMETER_REPO \
+		-e DOCKER_USERNAME \
+		-e PARAMETER_BUILD_ARGS \
+		-e PARAMETER_CACHE_FROM \
+		-e PARAMETER_FILE \
+		-e PARAMETER_LABELS \
+		-e PARAMETER_NO_CACHE \
+		-e PARAMETER_NO_CONSOLE \
+		-e PARAMETER_OUTPUT \
+		-e PARAMETER_PLATFORMS \
 		-e PARAMETER_TAGS \
-		-v $(shell pwd):/workspace \
+		-e PARAMETER_TARGET \
+		-v $(shell pwd):/home/user/src:ro \
+		--workdir /home/user/src \
+		--security-opt seccomp=unconfined --security-opt apparmor=unconfined \
 		vela-img:local

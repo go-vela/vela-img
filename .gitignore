@@ -31,3 +31,6 @@ release/
 *.ipr
 *.iws
 *.xml
+
+# Local environment configuration for testing
+.secrets.env

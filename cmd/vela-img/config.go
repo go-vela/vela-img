@@ -110,6 +110,9 @@ func (c *Config) Login() error {
 }
 
 // Write creates a Docker config.json file for building and publishing the image.
+//
+// This function is not being used but keeping around incase the file approach
+// becomes more viable.
 func (c *Config) Write() error {
 	logrus.Trace("writing registry configuration file")
 
@@ -134,12 +137,6 @@ func (c *Config) Write() error {
 		c.URL,
 		basicAuth,
 	)
-
-	// // send Filesystem call to create directory path for .netrc file
-	// err := a.Fs.MkdirAll(filepath.Dir("~/.docker/"), 0777)
-	// if err != nil {
-	// 	return err
-	// }
 
 	return a.WriteFile(c.Path, []byte(out), 0644)
 }

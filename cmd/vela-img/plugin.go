@@ -20,7 +20,7 @@ type Plugin struct {
 func (p *Plugin) Exec() error {
 	logrus.Debug("running plugin with provided configuration")
 
-	// output terraform version for troubleshooting
+	// output img version for troubleshooting
 	err := execCmd(versionCmd())
 	if err != nil {
 		return err

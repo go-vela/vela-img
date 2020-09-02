@@ -210,7 +210,7 @@ func (b *Build) Command() *exec.Cmd {
 
 // Exec formats and runs the commands for building a Docker image.
 func (b *Build) Exec() error {
-	logrus.Trace("running apply with provided configuration")
+	logrus.Trace("running build with provided configuration")
 
 	// create the build command for the file
 	cmd := b.Command()

@@ -14,7 +14,7 @@ RUN apk add --update --no-cache ca-certificates
 ##    docker build --no-cache -t vela-img:local .       ##
 ##########################################################
 
-FROM r.j3ss.co/img:v0.5.10
+FROM r.j3ss.co/img:v0.5.11
 
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 

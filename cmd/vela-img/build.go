@@ -203,7 +203,7 @@ func (b *Build) Command() *exec.Cmd {
 	// add the required directory param
 	flags = append(flags, b.Directory)
 
-	// nolint // this functionality is not exploitable the way
+	// nolint:gosec // this functionality is not exploitable the way
 	// the plugin accepts configuration
 	return exec.Command(_img, append([]string{buildAction}, flags...)...)
 }

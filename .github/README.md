@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/crates/l/gl.svg)](../LICENSE)
 [![GoDoc](https://godoc.org/github.com/go-vela/vela-img?status.svg)](https://godoc.org/github.com/go-vela/vela-img)
 [![Go Report Card](https://goreportcard.com/badge/go-vela/vela-img)](https://goreportcard.com/report/go-vela/vela-img)
-[![codecov](https://codecov.io/gh/go-vela/vela-img/branch/master/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-img)
+[![codecov](https://codecov.io/gh/go-vela/vela-img/branch/main/graph/badge.svg)](https://codecov.io/gh/go-vela/vela-img)
 
 Vela plugin designed for building and publishing [Docker](https://www.docker.com/) images.
 

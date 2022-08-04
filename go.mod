@@ -1,6 +1,6 @@
 module github.com/go-vela/vela-img
 
-go 1.17
+go 1.18
 
 require (
 	github.com/go-vela/types v0.14.0

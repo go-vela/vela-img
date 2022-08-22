@@ -1,3 +1,5 @@
+‼️ This plugin has been retired due to upstream inactivity in the `img` project. 
+
 # vela-img
 
 [![license](https://img.shields.io/crates/l/gl.svg)](../LICENSE)
